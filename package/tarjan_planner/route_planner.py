@@ -204,13 +204,19 @@ class Route:
         edges = [(self.best_route[i], self.best_route[i + 1]) for i in range(len(self.best_route) - 1)]
 
         pos = {i: (node["longitude"], node["latitude"]) for i, node in enumerate(self.nodes)}
-        node_colors = ["green" if i == self.best_route[0] else "skyblue" for i in range(len(self.nodes))]
+        node_colors = ["lightgreen" if i == self.best_route[0] else "skyblue" for i in range(len(self.nodes))]
         labels = nx.get_node_attributes(G, "label")
 
         plt.figure(figsize=(12, 10))
         nx.draw_networkx_nodes(G, pos, node_size=100, node_color=node_colors)
         nx.draw_networkx_labels(G, pos, labels, font_size=5, font_weight="bold")
         nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color=self.edge_colors, arrows=True)
+
+        # Create a legend
+        legend_labels = []
+        for transport_mode, attributes in self.transport.items():
+            legend_labels.append(plt.Line2D([0], [0], color=attributes["color"], lw=2, label=transport_mode))
+        plt.legend(handles=legend_labels, title="Transport Modes", loc='upper right')
 
         plt.title("Optimal Route with Transport Modes")
         plt.xlabel("Longitude")

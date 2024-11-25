@@ -21,7 +21,7 @@ def arg_parser():
     )
 
     parser.add_argument(
-        '-m', '--map',
+        '-p', '--plot',
         action='store_true',
         help='Enable the boolean flag (defaults to False).'
     )
@@ -32,13 +32,13 @@ def arg_parser():
     # Access the arguments
     cost = args.cost            # True if -c/--cost is specified, False otherwise
     bicycle = args.bicycle      # True if -b/--bicycle is specified, False otherwise
-    map = args.map              # True if -m/--map is specified, False otherwise
+    plot = args.plot            # True if -p/--plot is specified, False otherwise
     
-    return cost, bicycle, map
+    return cost, bicycle, plot
 
 
 def main():
-    cost, bicycle, map = arg_parser()
+    cost, bicycle, plot = arg_parser()
 
     if not bicycle:
         print("Hello Tarjan! Let's plan your optimal trip this festival season!")
@@ -69,15 +69,15 @@ def main():
     my_route = Route(bicycle_available=bicycle, prioritize_cost=cost)
     my_route.print_best_route()
 
-    if not map:
+    if not plot:
         while True:
-                map_usr = input("Would you like to see the route on a map aswell? (y/n): ").strip()
-                if re.fullmatch(r'[yYnN]', map_usr):  # Regex to match 'y', 'Y', 'n', or 'N'
+                plot_usr = input("Would you like to see the plot? (y/n): ").strip()
+                if re.fullmatch(r'[yYnN]', plot_usr):  # Regex to match 'y', 'Y', 'n', or 'N'
                     break
                 else:
                     print("Invalid input. Please enter 'y' or 'n'.")
         
-        if map_usr.capitalize() == "Y":
+        if plot_usr.capitalize() == "Y":
             my_route.plot_graph()
     else:
         my_route.plot_graph()

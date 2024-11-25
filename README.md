@@ -1,5 +1,21 @@
 # ACIT4420-Exam
  Repo for ACIT4420
+ 
+ ## How to Install
+ 1. Download the repo
+ 2. Using powershell/terminal, navigate to the base directory
+ 3. Run the following command to install the package:
+    - $ pip install .
+
+ ## How to Use the Tarjan Planner
+ 1. $ tarjan-planner
+ 2. Options:
+    - -c: prioritize cost over time
+    - -b: let the program use bicycle
+    - -p: display the plot
+
+ ## How to Use the File Organizer
+ 1. $ file-organizer
 
 ## Structure requirements
 1. Main module (main.py): The entry point of your application. It should orchestrate the program’s functionality by calling appropriate functions or classes from other modules.
