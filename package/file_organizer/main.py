@@ -31,7 +31,7 @@ def main():
         print(f"Error: Permission denied to write in '{base_dir}'.")
         return
     
-    print("Dir found and permissions are OK: Continuing")
+    print("Directory found and permissions are OK: Continuing")
 
     # Initialize FileSorter and start organizing
     sorter = FileSorter(chosen_dir)
