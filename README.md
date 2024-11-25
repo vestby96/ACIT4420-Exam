@@ -9,3 +9,6 @@
 5. Error Handling: Implement custom error handling to manage runtime issues like file not found, invalid inputs, or network errors.
 6. Regular expressions: Use regular expressions for tasks such as input validation, data parsing, or pattern matching where applicable.
 7. Testing: Write unit tests for your functions or classes using pytest. Ensure that your tests cover various scenarios and edge cases. (optional)
+
+## General notes
+- The project is contained in a single package including all tasks.
