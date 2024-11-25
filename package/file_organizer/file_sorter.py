@@ -1,13 +1,15 @@
-import os
 import shutil
-import re
+import os
 import logging
+import re
 from package.file_organizer.config import FILE_TYPE_CATEGORIES
+from package.file_organizer.logger import log_function_call
 
 class FileSorter:
     def __init__(self, base_dir):
         self.base_dir = base_dir
 
+    @log_function_call
     def organize_files(self):
         for filename in os.listdir(self.base_dir):
             file_path = os.path.join(self.base_dir, filename)
@@ -31,9 +33,10 @@ class FileSorter:
                 logging.info(f"Moved: {file_path} -> {dest_folder}")
             except Exception as e:
                 logging.error(f"Failed to move {file_path}: {e}")
+        return "Success"
 
+    @log_function_call
     def identify_file_type(self, filename):
-        # Match file extensions with regex patterns from config
         for file_type, pattern in FILE_TYPE_CATEGORIES.items():
             if re.search(pattern, filename, re.IGNORECASE):
                 return file_type

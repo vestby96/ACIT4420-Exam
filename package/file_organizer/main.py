@@ -2,14 +2,9 @@ import os
 import re
 import logging
 from package.file_organizer.file_sorter import FileSorter
+from package.file_organizer.logger import log_function_call
 
-# Setup logging
-logging.basicConfig(
-    filename='package/file_organizer/file_organizer.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-
+@log_function_call
 def main():
     current_dir = "./package/tests"
     directories = [item for item in os.listdir(current_dir) if os.path.isdir(os.path.join(current_dir, item))]
@@ -21,7 +16,6 @@ def main():
 
     base_dir = input("Enter the directory to organize: ").strip()
 
-    # Validate input against regex pattern
     if not re.match(dir_name_pattern, base_dir):
         logging.error(f"Invalid directory name: {base_dir}")
         print("Error: Directory name contains invalid characters. Only alphanumeric characters, dashes, and underscores are allowed.")
@@ -29,7 +23,6 @@ def main():
 
     chosen_dir = current_dir + "/" + base_dir
 
-    # Validate directory
     if not os.path.exists(chosen_dir):
         logging.error(f"Directory does not exist: {base_dir}")
         print(f"Error: The directory '{base_dir}' does not exist.")
@@ -42,9 +35,11 @@ def main():
     
     print("Directory found and permissions are OK: Continuing")
 
-    # Initialize FileSorter and start organizing
     sorter = FileSorter(chosen_dir)
     sorter.organize_files()
 
+    return "Success"
+
 if __name__ == "__main__":
     main()
+
