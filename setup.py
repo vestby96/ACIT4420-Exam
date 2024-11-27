@@ -8,7 +8,7 @@ setup(
     version="1.0.0",
     author="Erlend Vestby",
     description="A Python package for the ACIT4420 exam",       # Short description
-    long_description=long_description,
+    long_description=long_description,                          # FUll description
     long_description_content_type="text/markdown",
     url="https://github.com/vestby96/ACIT4420-Exam",            # Github repository link
     packages=find_packages(),

@@ -6,7 +6,7 @@ from package.file_organizer.logger import log_function_call
 
 @log_function_call
 def main():
-    current_dir = "./package/tests"
+    current_dir = "./package/tests/file_organizer"
     directories = [item for item in os.listdir(current_dir) if os.path.isdir(os.path.join(current_dir, item))]
     
     print("\nAvailable directories:")
