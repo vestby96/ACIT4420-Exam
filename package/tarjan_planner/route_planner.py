@@ -1,123 +1,29 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+import json
 from itertools import permutations
 from geopy.distance import geodesic
 from package.tarjan_planner.logger import log_execution_time
 
 class Route:
     @log_execution_time
-    def __init__(self, bicycle_available=False, prioritize_cost=False) -> None:
+    def __init__(self, transport_modes: json, locations: json, bicycle_available=False, prioritize_cost=False) -> None:
+        """Transport modes and locations takes in JSON files, where locations is a list"""
         # Define transportation modes
-        self.transport = {
-            "Bus": {
-                "speed": 40,           # Speed in km/h
-                "cost": 2,             # Cost per km in currency units
-                "transfer_time": 5,    # Transfer time in minutes
-                "color": "blue",
-            },
-            "Train": {
-                "speed": 80,
-                "cost": 5,
-                "transfer_time": 2,
-                "color": "green",
-            },
-            "Bicycle": {
-                "speed": 15,
-                "cost": 0,
-                "transfer_time": 1,
-                "color": "orange",
-            },
-            "Walking": {
-                "speed": 5,
-                "cost": 0,
-                "transfer_time": 0,
-                "color": "red",
-            },
-        }
-            
-        self.nodes = [
-            {
-                "name": "Tarjan Home",
-                "street": "Han River",
-                "district": "Yeouido",
-                "latitude": 37.5260,
-                "longitude": 126.9287
-            },
-            {
-                "name": "Relative 1",
-                "street": "Gangnam-daero",
-                "district": "Gangnam-gu",
-                "latitude": 37.4979,
-                "longitude": 127.0276
-            },
-            {
-                "name": "Relative 2",
-                "street": "Yangjae-daero",
-                "district": "Seocho-gu",
-                "latitude": 37.4833,
-                "longitude": 127.0322
-            },
-            {
-                "name": "Relative 3",
-                "street": "Sinsa-daero",
-                "district": "Gangnam-gu",
-                "latitude": 37.5172,
-                "longitude": 127.0286
-            },
-            {
-                "name": "Relative 4",
-                "street": "Apgujeong-ro",
-                "district": "Gangnam-gu",
-                "latitude": 37.5219,
-                "longitude": 127.0411
-            },
-            {
-                "name": "Relative 5",
-                "street": "Hannam-daero",
-                "district": "Yongsan-gu",
-                "latitude": 37.5340,
-                "longitude": 127.0026
-            },
-            {
-                "name": "Relative 6",
-                "street": "Seongsu-daero",
-                "district": "Seongdong-gu",
-                "latitude": 37.5443,
-                "longitude": 127.0557
-            },
-            {
-                "name": "Relative 7",
-                "street": "Cheongdam-ro",
-                "district": "Gangnam-gu",
-                "latitude": 37.5172,
-                "longitude": 127.0391
-            },
-            {
-                "name": "Relative 8",
-                "street": "Bukhan-ro",
-                "district": "Jongno-gu",
-                "latitude": 37.5800,
-                "longitude": 126.9844
-            },
-            {
-                "name": "Relative 9",
-                "street": "Samseong-ro",
-                "district": "Gangnam-gu",
-                "latitude": 37.5110,
-                "longitude": 127.0590
-            },
-            {
-                "name": "Relative 10",
-                "street": "Jamsil-ro",
-                "district": "Songpa-gu",
-                "latitude": 37.5133,
-                "longitude": 127.1028
-            }
-        ]
+        with open(transport_modes, 'r') as file:
+            try:
+                self.transport = json.load(file)
+            except json.JSONDecodeError as e:
+                raise ValueError(f"Invalid JSON format in {transport_modes}: {e}")
+
+        with open(locations, 'r') as file:
+            try:
+                self.nodes = json.load(file)
+            except json.JSONDecodeError as e:
+                raise ValueError(f"Invalid JSON format in {locations}: {e}")
 
         self.bicycle_available = bicycle_available
         self.prioritize_cost = prioritize_cost
-
         self.best_route = False
         self.best_distance = False
         self.edge_colors = []
@@ -193,35 +99,41 @@ class Route:
     
     # Visualization using NetworkX with Transport Modes
     def plot_graph(self):
-        if not self.best_route and not self.best_distance:
-            self.get_shortest_route()
+        try:
+            if not self.best_route and not self.best_distance:
+                self.get_shortest_route()
         
-        G = nx.DiGraph()
+            G = nx.DiGraph()
 
-        for i, node in enumerate(self.nodes):
-            G.add_node(i, label=node["name"])
+            for i, node in enumerate(self.nodes):
+                G.add_node(i, label=node["name"])
 
-        edges = [(self.best_route[i], self.best_route[i + 1]) for i in range(len(self.best_route) - 1)]
+            edges = [(self.best_route[i], self.best_route[i + 1]) for i in range(len(self.best_route) - 1)]
 
-        pos = {i: (node["longitude"], node["latitude"]) for i, node in enumerate(self.nodes)}
-        node_colors = ["lightgreen" if i == self.best_route[0] else "skyblue" for i in range(len(self.nodes))]
-        labels = nx.get_node_attributes(G, "label")
+            pos = {i: (node["longitude"], node["latitude"]) for i, node in enumerate(self.nodes)}
+            node_colors = ["lightgreen" if i == self.best_route[0] else "skyblue" for i in range(len(self.nodes))]
+            labels = nx.get_node_attributes(G, "label")
 
-        plt.figure(figsize=(12, 10))
-        nx.draw_networkx_nodes(G, pos, node_size=100, node_color=node_colors)
-        nx.draw_networkx_labels(G, pos, labels, font_size=5, font_weight="bold")
-        nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color=self.edge_colors, arrows=True)
+            plt.figure(figsize=(12, 10))
+            nx.draw_networkx_nodes(G, pos, node_size=100, node_color=node_colors)
+            nx.draw_networkx_labels(G, pos, labels, font_size=5, font_weight="bold")
+            nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color=self.edge_colors, arrows=True)
 
-        # Create a legend
-        legend_labels = []
-        for transport_mode, attributes in self.transport.items():
-            legend_labels.append(plt.Line2D([0], [0], color=attributes["color"], lw=2, label=transport_mode))
-        plt.legend(handles=legend_labels, title="Transport Modes", loc='upper right')
-
-        plt.title("Optimal Route with Transport Modes")
-        plt.xlabel("Longitude")
-        plt.ylabel("Latitude")
-        plt.show()
+            # Create a legend
+            legend_labels = []
+            for transport_mode, attributes in self.transport.items():
+                legend_labels.append(plt.Line2D([0], [0], color=attributes["color"], lw=2, label=transport_mode))
+            plt.legend(handles=legend_labels, title="Transport Modes", loc='upper right')
+            
+            plt.title("Optimal Route with Transport Modes")
+            plt.xlabel("Longitude")
+            plt.ylabel("Latitude")
+            plt.show()
+        
+        except nx.NetworkXError as e:
+            print(f"Error in NetworkX graph generation: {e}")
+        except Exception as e:
+            print(f"Unexpected error during plotting: {e}")
 
     # Determine transport mode with prioritization for cost or time
     def determine_transport_mode(self, distance):

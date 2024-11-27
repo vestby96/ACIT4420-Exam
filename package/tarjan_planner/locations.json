@@ -1,0 +1,79 @@
+[
+    {
+        "name": "Tarjan Home",
+        "street": "Han River",
+        "district": "Yeouido",
+        "latitude": 37.5260,
+        "longitude": 126.9287
+    },
+    {
+        "name": "Relative 1",
+        "street": "Gangnam-daero",
+        "district": "Gangnam-gu",
+        "latitude": 37.4979,
+        "longitude": 127.0276
+    },
+    {
+        "name": "Relative 2",
+        "street": "Yangjae-daero",
+        "district": "Seocho-gu",
+        "latitude": 37.4833,
+        "longitude": 127.0322
+    },
+    {
+        "name": "Relative 3",
+        "street": "Sinsa-daero",
+        "district": "Gangnam-gu",
+        "latitude": 37.5172,
+        "longitude": 127.0286
+    },
+    {
+        "name": "Relative 4",
+        "street": "Apgujeong-ro",
+        "district": "Gangnam-gu",
+        "latitude": 37.5219,
+        "longitude": 127.0411
+    },
+    {
+        "name": "Relative 5",
+        "street": "Hannam-daero",
+        "district": "Yongsan-gu",
+        "latitude": 37.5340,
+        "longitude": 127.0026
+    },
+    {
+        "name": "Relative 6",
+        "street": "Seongsu-daero",
+        "district": "Seongdong-gu",
+        "latitude": 37.5443,
+        "longitude": 127.0557
+    },
+    {
+        "name": "Relative 7",
+        "street": "Cheongdam-ro",
+        "district": "Gangnam-gu",
+        "latitude": 37.5172,
+        "longitude": 127.0391
+    },
+    {
+        "name": "Relative 8",
+        "street": "Bukhan-ro",
+        "district": "Jongno-gu",
+        "latitude": 37.5800,
+        "longitude": 126.9844
+    },
+    {
+        "name": "Relative 9",
+        "street": "Samseong-ro",
+        "district": "Gangnam-gu",
+        "latitude": 37.5110,
+        "longitude": 127.0590
+    },
+    {
+        "name": "Relative 10",
+        "street": "Jamsil-ro",
+        "district": "Songpa-gu",
+        "latitude": 37.5133,
+        "longitude": 127.1028
+    }
+]

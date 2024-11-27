@@ -1,0 +1,26 @@
+{
+    "Bus": {
+        "speed": 40,
+        "cost": 2,
+        "transfer_time": 5,
+        "color": "blue"
+    },
+    "Train": {
+        "speed": 80,
+        "cost": 5,
+        "transfer_time": 2,
+        "color": "green"
+    },
+    "Bicycle": {
+        "speed": 15,
+        "cost": 0,
+        "transfer_time": 1,
+        "color": "orange"
+    },
+    "Walking": {
+        "speed": 5,
+        "cost": 0,
+        "transfer_time": 0,
+        "color": "red"
+    }
+}
