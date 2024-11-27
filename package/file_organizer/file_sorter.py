@@ -4,6 +4,7 @@ import logging
 import re
 from package.file_organizer.config import FILE_TYPE_CATEGORIES
 from package.file_organizer.logger import log_function_call
+from package.file_organizer.errors import FileOrganizerError
 
 class FileSorter:
     def __init__(self, base_dir, config_path="package/file_organizer/config.py"):
@@ -32,9 +33,13 @@ class FileSorter:
             try:
                 shutil.move(file_path, os.path.join(dest_folder, filename))
                 logging.info(f"Moved: {file_path} -> {dest_folder}")
+            except shutil.Error as e:
+                logging.error(f"File move error: {e}")
+                raise FileOrganizerError(f"Failed to move file '{filename}'") from e
             except Exception as e:
-                logging.error(f"Failed to move {file_path}: {e}")
-        return "Success"
+                logging.error(f"Unexpected error while processing '{filename}': {e}")
+                raise
+        return "OK"
 
     @log_function_call
     def identify_file_type(self, filename):
@@ -81,7 +86,6 @@ class FileSorter:
         FILE_TYPE_CATEGORIES[category] = updated_pattern
         
         logging.info(f"Added extension '.{extension}' to category '{category}'.")
-
 
 
     def update_config_file(self, category, current_pattern, updated_pattern):
