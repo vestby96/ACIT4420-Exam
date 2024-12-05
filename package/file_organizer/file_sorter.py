@@ -68,6 +68,7 @@ class FileSorter:
 
         return "Others"
 
+    @log_function_call
     def add_file_type_to_category(self, category, extension):
         # Fetch the current pattern for the category
         current_pattern = FILE_TYPE_CATEGORIES[category]
@@ -86,7 +87,6 @@ class FileSorter:
         FILE_TYPE_CATEGORIES[category] = updated_pattern
         
         logging.info(f"Added extension '.{extension}' to category '{category}'.")
-
 
     def update_config_file(self, category, current_pattern, updated_pattern):
         # Read the current config file

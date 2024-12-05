@@ -29,8 +29,7 @@ class Route:
         self.edge_colors = []
         self.route_description = []
         self.total_time = 0  # Total time in hours
-        self.total_cost = 0  # Total cost of the trip
-        
+        self.total_cost = 0  # Total cost of the trip in $
         self.distance_matrix = [[0] * len(self.nodes) for _ in range(len(self.nodes))]
 
         for i in range(len(self.nodes)):
@@ -42,9 +41,7 @@ class Route:
                 self.distance_matrix[i][j] = dist
                 self.distance_matrix[j][i] = dist
         
-        
-        if not self.best_route and not self.best_distance:
-            self.get_shortest_route()
+        self.get_shortest_route()
 
         for i in range(len(self.best_route) - 1):
             start, end = self.best_route[i], self.best_route[i + 1]
@@ -63,15 +60,8 @@ class Route:
                 f"{self.nodes[start]['name']} ({distance:.2f} km, {trip_time * 60:.1f} min, {mode})"
             )
         
-        self.route_description.append("Tarjan Home")
+        self.route_description.append(self.nodes[0]['name'])
 
-
-    def get_nodes(self):
-        return self.nodes
-    
-    def get_transport(self):
-        return self.transport
-    
     def get_shortest_route(self):
         best_distance = float("inf")
         best_route = None

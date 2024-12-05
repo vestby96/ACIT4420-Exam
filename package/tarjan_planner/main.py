@@ -1,6 +1,5 @@
 from package.tarjan_planner.route_planner import Route
 import argparse
-import re
 import os
 
 def arg_parser():

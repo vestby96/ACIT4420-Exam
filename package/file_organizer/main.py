@@ -18,44 +18,47 @@ def main():
     while True:
         base_dir = input("Enter the directory to organize: ").strip()
 
-        if not re.match(dir_name_pattern, base_dir):
-            logging.error(f"Invalid directory name: {base_dir}")
-            print("Error: Directory name contains invalid characters. Only alphanumeric characters, dashes, and underscores are allowed.")
-            continue
+        try:
+            # Validate directory name
+            if not re.match(dir_name_pattern, base_dir):
+                raise InvalidDirectoryNameError(
+                    "Directory name contains invalid characters. Only alphanumeric characters, dashes, and underscores are allowed"
+                )
 
-        chosen_dir = os.path.join(current_dir, base_dir)
+            chosen_dir = os.path.join(current_dir, base_dir)
 
-        if not os.path.exists(chosen_dir):
-            logging.error(f"Directory does not exist: {base_dir}")
-            print(f"Error: The directory '{base_dir}' does not exist. Please try again.")
-            continue
+            # Check if directory exists
+            if not os.path.exists(chosen_dir):
+                raise DirectoryNotFoundError(f"The directory '{base_dir}' does not exist")
 
-        if not os.access(chosen_dir, os.W_OK):
-            logging.error(f"Permission denied for directory: {base_dir}")
-            print(f"Error: Permission denied to write in '{base_dir}'.")
-            return  # Exit the program for permission errors.
+            # Check for write permissions
+            if not os.access(chosen_dir, os.W_OK):
+                raise PermissionDeniedError(f"Permission denied to write in '{base_dir}'")
 
-        # Break out of the loop when the directory is valid
-        print("Directory found and permissions are OK: Continuing")
-        break    
+            # Break out of the loop when the directory is valid
+            print("Directory found and permissions are OK: Continuing")
+            break
 
+        except InvalidDirectoryNameError as e:
+            logging.error(e)
+            print(f"Error: {e}. Please try again.")
+        except DirectoryNotFoundError as e:
+            logging.error(e)
+            print(f"Error: {e}. Please try again.")
+        except PermissionDeniedError as e:
+            logging.error(e)
+            print(f"Error: {e}. Please try again.")
+
+    # Organize files
     sorter = FileSorter(chosen_dir)
     sorter.organize_files()
 
     return "OK"
 
+
 if __name__ == "__main__":
     try:
         main()
-    except InvalidDirectoryNameError as e:
-        logging.error(e)
-        print(f"Error: {e}")
-    except DirectoryNotFoundError as e:
-        logging.error(e)
-        print(f"Error: {e}")
-    except PermissionDeniedError as e:
-        logging.error(e)
-        print(f"Error: {e}")
     except Exception as e:
         logging.error(f"Unexpected error: {e}")
         print(f"An unexpected error occurred: {e}")
